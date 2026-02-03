@@ -1,83 +1,1045 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Pankaj | Web Developer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="image/logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rakhi.</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://kit.fontawesome.com/73a20427c2.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <style>
+        /* --- CSS Start --- */
+
+        /* Theme Variables */
+        :root {
+            /* Light Theme */
+            --color-primary: #1a1a1a;
+            --color-secondary-text: #555555; 
+            --color-background: #fffff;
+            --color-accent: #6c63ff; /* Primary Accent */
+            --color-link-hover: #ff004f; /* Preferred Hover Color */
+            --color-nav-bg: rgba(255, 255, 255, 0.9); 
+            --color-content-bg: rgba(255, 255, 255, 0.7);
+            --header-height: 80px;
+            --box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            --box-border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        body[data-theme="dark"] {
+            /* Dark Theme */
+            --color-primary: #f0f0f0;
+            --color-secondary-text: #aaaaaa;
+            --color-background: #0F172A;
+            --color-accent: #a49bff;
+            --color-link-hover: #ff5277; 
+            --color-nav-bg: rgba(26, 26, 26, 0.9);
+            --color-content-bg: rgba(26, 26, 26, 0.7);
+            --box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            --box-border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Basic Reset */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+
+        body { 
+            
+            
+            background-color: var(--color-background);
+            color: var(--color-primary);
+            transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* 3D Container Styling */
+        #three-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0; 
+            transition: opacity 1s ease-in;
+        }
+
+        /* Header & Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: var(--color-nav-bg);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            height: var(--header-height);
+        }
+
+        .logo {
+            font-size: clamp(18px, 4vw, 24px);
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: var(--color-link-hover);
+        }
+
+        .menu-button { display: none; background: none; border: none; font-size: 24px; color: var(--color-primary); cursor: pointer; }
+
+        /* Desktop Nav */
+        #main-nav a {
+            color: var(--color-primary);
+            text-decoration: none;
+            margin: 0 10px;
+            opacity: 0.7;
+            transition: opacity 0.2s, color 0.2s;
+            font-size: clamp(14px, 2.5vw, 16px);
+            font-weight: 500;
+        }
+        #main-nav a.active, #main-nav a:hover { opacity: 1; color: var(--color-link-hover); }
+
+        /* Controls */
+        #theme-toggle { background: none; border: none; font-size: 20px; color: var(--color-primary); cursor: pointer; margin-left: 10px; transition: transform 0.2s; }
+        
+        /* Main Content Area */
+        main {
+            padding: 0 5%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .page { 
+            display: block; 
+            padding-bottom: 50px;
+            padding-top: 50px; 
+            scroll-margin-top: var(--header-height);
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        /* Home section needs special padding adjustment */
+        #page-home {
+            min-height: calc(100vh - var(--header-height));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 0;
+            padding-bottom: 50px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1.2; margin-bottom: 20px; }
+        h1 span { color: var(--color-link-hover); }
+        
+        /* Homepage Resume Button Style - SIZED FOR DESKTOP */
+        .home-resume-btn {
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+            width: 120px; 
+            height: 40px; 
+            background-color: var(--color-link-hover);
+            color: var(--color-background);
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 25px;
+            font-size: 16px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
+        }
+        .home-resume-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background-color: var(--color-accent);
+        }
+        /* Mobile overrides to prevent button being too small on tiny screens */
+        @media (max-width: 400px) {
+            .home-resume-btn {
+                width: 100%; 
+                height: 45px;
+            }
+        }
+
+
+        /* Heading style for sections */
+        h2 { 
+            font-size: clamp(2rem, 6vw, 3.5rem); 
+            margin-top: 0;
+            margin-bottom: 30px; 
+            padding-bottom: 10px; 
+            display: block; 
+            width: 100%;
+        }
+        h2::first-letter {
+            color: var(--color-link-hover);
+        }
+        
+        /* General content box styling */
+        .content-box {
+            background-color: var(--color-content-bg);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            backdrop-filter: blur(5px);
+            margin-bottom: 40px;
+        }
+        
+        .content-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .content-box p {
+            font-size: clamp(16px, 3vw, 18px);
+            line-height: 1.6;
+            text-align: left; /* Default text alignment */
+        }
+        
+        /* Specific class for justified text */
+       .justified-text {
+    		text-align: left;
+        }
+
+        @media (min-width: 768px) {
+            .justified-text {
+                text-align: justify;
+                text-justify: inter-word;
+                hyphens: auto;
+            }
+        }
+
+        
+        .content-box li {
+            font-size: clamp(16px, 3vw, 18px);
+            line-height: 1.6;
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .content-box li::before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: var(--color-link-hover);
+            font-size: 14px;
+        }
+
+        .content-box a {
+            color: var(--color-accent);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .content-box a:hover {
+            color: var(--color-link-hover);
+        }
+        
+        /* Social Icons */
+        .social-links {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+            font-size: 24px;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+            color: var(--color-primary);
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--color-link-hover);
+            transform: scale(1.2);
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .skill-item {
+            text-align: center;
+            padding: 15px 10px;
+            border: 1px solid var(--color-primary);
+            border-radius: 8px;
+            transition: background-color 0.3s, border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            background-color: transparent;
+        }
+
+        .skill-item:hover {
+            border-color: var(--color-accent);
+            background-color: rgba(var(--color-accent), 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .skill-item i {
+            font-size: 30px;
+            color: var(--color-accent);
+            margin-bottom: 5px;
+        }
+        .skill-item p {
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center; /* Centering text under icons */
+        }
+        
+        /* Achievement Cards Look */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .achievement-card {
+            background-color: var(--color-background);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(var(--color-accent), 0.5);
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        .achievement-card:hover {
+            background-color: rgba(0, 0, 0, 0.05); 
+        }
+
+        /* Centering text within achievement cards */
+        .achievement-card h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: var(--color-link-hover);
+            text-align: center; /* Explicitly centered */
+        }
+        .achievement-card p {
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-align: center; /* Explicitly centered */
+        }
+        .achievement-card a {
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        /* Project Cards Look - NEW MODERN DESIGN WITH PREVIEW */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .project-card {
+            background-color: var(--color-content-bg);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            overflow: hidden; 
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: var(--box-border);
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        }
+        .project-card-image {
+            height: 180px;
+            background-color: rgba(var(--color-accent), 0.1); 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            color: var(--color-accent);
+            border-bottom: 3px solid var(--color-link-hover);
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .project-card-image i {
+            margin-bottom: 5px;
+        }
+
+        .project-card-content {
+            padding: 25px;
+        }
+
+        .project-card-content h3 {
+            font-size: 22px;
+            margin-bottom: 8px;
+            color: var(--color-link-hover);
+            font-weight: 700;
+        }
+
+        .project-card-content .tech-stack {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-secondary-text);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .project-card-content p {
+            font-size: 15px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            text-align: left; 
+        }
+        
+        .project-card-content .links {
+            display: flex;
+            gap: 15px;
+        }
+        .project-card .card-link {
+            background-color: var(--color-accent);
+            color: var(--color-background);
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .project-card .card-link:hover {
+            background-color: var(--color-link-hover);
+            opacity: 1;
+        }
+        /* END NEW PROJECT CARD STYLES */
+
+
+        /* Contact Form */
+        form {
+            background-color: var(--color-background);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .input-box {
+            position: relative;
+            margin: 30px 0;
+        }
+
+        /* Added hidden label for accessibility */
+        .hidden-label {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+
+        .input-box input, .input-box textarea {
+            width: 100%;
+            font-size: 16px;
+            padding: 15px 0 5px 0;
+            border: none;
+            border-bottom: 2px solid var(--color-primary);
+            outline: none;
+            resize: none;
+            background: transparent;
+            color: var(--color-primary);
+        }
+        
+        .input-box span {
+            position: absolute;
+            left: 0;
+            top: 15px;
+            font-size: 16px;
+            color: #666;
+            pointer-events: none;
+            transition: 0.3s ease;
+        }
+
+        .input-box input:focus ~ span,
+        .input-box input:valid ~ span,
+        .input-box textarea:focus ~ span,
+        .input-box textarea:valid ~ span {
+            color: var(--color-link-hover);
+            font-size: 12px;
+            transform: translateY(-20px);
+        }
+        
+        .input-box input:focus,
+        .input-box textarea:focus {
+            border-bottom-color: var(--color-link-hover);
+        }
+
+        form button[type="submit"] {
+            width: 100%;
+            background-color: var(--color-accent);
+            color: var(--color-background);
+            border: none;
+            cursor: pointer;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 5px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        
+        form button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px 5%;
+            border-top: 1px solid rgba(var(--color-primary), 0.1);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .menu-button { display: block; }
+            
+            #main-nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: var(--header-height);
+                left: 0;
+                width: 100%;
+                background-color: var(--color-nav-bg);
+                padding: 10px 0;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+
+            #main-nav.open { display: flex; }
+            
+            #main-nav a {
+                padding: 10px 5%;
+                margin: 5px 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .controls {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+            }
+            
+            .content-box {
+                padding: 25px;
+            }
+
+            .projects-grid {
+                 grid-template-columns: 1fr;
+                 gap: 20px;
+            }
+             .achievements-grid {
+                 grid-template-columns: 1fr;
+                 gap: 15px;
+            }
+        }
+        
+        /* --- CSS End --- */
+    </style>
 </head>
-<body>
+<body data-theme="dark"> 
+    <div id="three-container"></div>
 
-<header class="hero">
-  <nav>
-    <h2 class="logo">Pankaj<span>.</span></h2>
-    <ul>
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+    <header>
+        <div class="logo">
+            <p><b><span>R</span>akhi.</b></p>
+        </div>
+        <nav id="main-nav">
+            <a href="#page-home">HOME</a>
+            <a href="#page-about-me">ABOUT ME</a>
+            <a href="#page-skills">SKILLS</a>
+            <a href="#page-achievements">ACHIEVEMENTS</a>
+            <a href="#page-projects">PROJECTS</a>
+            <a href="#page-contact">CONNECT</a>
+        </nav>
+        <div class="controls">
+            <button id="theme-toggle" aria-label="Toggle theme">🌙</button>
+            <button id="menu-toggle" class="menu-button">☰</button>
+        </div>
+    </header>
 
-  <div class="hero-content">
-    <h1>Hi, I'm <span>Pankaj</span></h1>
-    <p>Frontend Web Developer</p>
-    <a href="resume.pdf" class="btn" download>Download Resume</a>
-  </div>
-</header>
+    <main id="content-container">
+        <section id="page-home" class="page">
+            <h1 id="home">Hi,<br>I'm <span>Rakhi</span></h1>
+            <p style="font-size: clamp(1.2rem, 4vw, 2rem);">A Java Backend Developer (Fresher) focused on problem-solving and software development. Welcome here!</p>
+            
+            <a href="https://drive.google.com/file/d/17wNyl8vYd03hSB80RwhbS9oDc2j7sW51/view?usp=drive_link" target="_blank" download class="home-resume-btn">
+                Resume
+            </a>
+            </section>
+        <section id="page-about-me" class="page">
+            <h2 id="about-me">About Me</h2>
+            <div class="content-box">
+                <p class="justified-text">
+                    I am Rakhi Kumari, a Java Backend Developer (Fresher) with a profound passion for tackling complex challenges through software development and algorithmic thinking. My focus lies in creating efficient solutions and building clean, responsive user experiences on the web. I thrive in environments that demand continuous learning, whether I'm optimizing data structures or diving into new framework documentation. I believe that thoughtful code can transform ideas into impactful products, and I am always seeking opportunities to grow my craft and contribute to meaningful projects.
+                </p>
+                <div class="social-links" style="margin-top: 25px;">
+                    <strong>Connect with me:</strong>
+                    <a href="https://www.linkedin.com/in/rakhi-kumari-006236238/" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="https://www.mailto:im.kumarirakhi020201@gmail.com" target="_blank" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+                </div>
+            </div>
+        </section>
 
-<section id="about" class="section">
-  <h2>About Me</h2>
-  <p>
-    I am a passionate web developer skilled in HTML, CSS, JavaScript.
-    I create modern, responsive and user-friendly websites with premium UI.
-  </p>
-</section>
+        <section id="page-skills" class="page">
+            <h2 id="skills">Skills</h2>
+            <div class="content-box">
+                <div class="skills-grid">
+                    <div class="skill-item"><i class="fa-brands fa-html5"></i><p>HTML5</p></div>
+                    <div class="skill-item"><i class="fa-brands fa-css3-alt"></i><p>CSS3</p></div>
+                    <div class="skill-item"><i class="fa-brands fa-js"></i><p>JavaScript</p></div>
+                    <div class="skill-item"><i class="fa-brands fa-java"></i><p>Java</p></div>
+                    <div class="skill-item"><i class="fa-solid fa-c"></i><p>C/C++</p></div>
+                    <div class="skill-item"><i class="fa-solid fa-database"></i><p>SQL/DBMS</p></div>
+                    <div class="skill-item"><i class="fa-solid fa-code"></i><p>DSA</p></div>
+                    <div class="skill-item"><i class="fa-solid fa-user"></i><p>Hibernate</p></div>
+                    <div class="skill-item"><i class="fa-solid fa-user"></i><p>Spring Boot</p></div>
+                    <div class="skill-item"><i class="fa-solid fa-user"></i><p>JPA</p></div>
+                    <div class="skill-item"><i class="fa-solid fa-user"></i><p>OOPs</p></div> 
+                    <div class="skill-item"><i class="fa-solid fa-user"></i><p>REST APIs</p></div> 
+                     <div class="skill-item"><i class="fa-solid fa-user"></i><p>CRUD Operations</p></div>
+                </div>
+            </div>
+        </section>
 
-<section id="skills" class="section">
-  <h2>Skills</h2>
+        <section id="page-achievements" class="page">
+            <h2 id="achievements">Achievements</h2>
+            <div class="content-box">
+                <p style="margin-bottom: 25px;">Showcasing my commitment to problem-solving and coding excellence:</p>
+                <div class="achievements-grid">
+                    
+                    <div class="achievement-card">
+                        <i class="fa-solid fa-star" style="color: gold; font-size: 24px;"></i>
+                        <h4>Java</h4>
+                        <p>Achieved Logic Based Java programming.</p>
+                        <a href="https://drive.google.com/file/d/1ugC0grMwlWyNRltR0JRPR1qQnbFEjlAE/view?usp=sharing" target="_blank">View Certificate</a>
+                    </div>
+                    
+                    <div class="achievement-card">
+                         <i class="fa-solid fa-code" style="color: silver; font-size: 24px;"></i>
+                        <h4>6 Month Internship</h4>
+                        <p>Earned Internship Certificate By Codezeal Technology.</p>
+                        <a href="https://drive.google.com/file/d/1nypjGQxTdX9mau4ZE3Wyvx9Cdsp2Mgg-/view?usp=sharing" target="_blank">View Certificate</a>
+                    </div>
 
-  <div class="skill">
-    <span>HTML</span>
-    <div class="bar"><div style="width:90%"></div></div>
-  </div>
+                    <div class="achievement-card">
+                        <i class="fa-solid fa-medal" style="color: #00bcd4; font-size: 24px;"></i>
+                        <h4>1 Year experience as a Technical Assistant</h4>
+                        <p>Chaibasa Engineering College, Chaibasa.</p>
+                        <a href="https://drive.google.com/file/d/1TFVdQ_BQsLH-ovvWaZyMUxERtl8dQZTG/view?usp=drive_link" target="_blank">View Certificate</a>
+                    </div>
+                    
+                    <div class="achievement-card">
+                        <i class="fa-solid fa-code-branch" style="color: #a49bff; font-size: 24px;"></i>
+                        <h4>HackerRank C</h4>
+                        <p>Achieved 3-Star rating in C programming.</p>
+                        <a href="  " target="_blank">View Profile</a>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <div class="skill">
-    <span>CSS</span>
-    <div class="bar"><div style="width:85%"></div></div>
-  </div>
+        <section id="page-projects" class="page">
+            <h2 id="projects">Projects</h2>
+            <div class="projects-grid">
+                
+                <div class="project-card">
+                    <div class="project-card-image" style="background-color: var(--color-accent);">
+                        <i class="fa-solid fa-laptop-code"></i>
+                        <div style="font-size: 14px; margin-top: 5px;">HTML | CSS | JS | Three.js</div>
+                    </div>
+                    <div class="project-card-content">
+                        <h3>Portfolio Website</h3>
+                        <p>A responsive personal portfolio showcasing technical skills and achievements with a modern, dynamic design.</p>
+                        <div class="links">
+                            <a href="#" class="card-link">View Source (Current)</a>
+                        </div>
+                    </div>
+                </div>
 
-  <div class="skill">
-    <span>JavaScript</span>
-    <div class="bar"><div style="width:75%"></div></div>
-  </div>
-</section>
+                <div class="project-card">
+                    <div class="project-card-image" style="background-color: #00bcd4;">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                        <div style="font-size: 14px; margin-top: 5px;">HTML | CSS | Responsive</div>
+                    </div>
+                    <div class="project-card-content">
+                        <h3>Healthcare Website</h3>
+                        <p>A frontend project demonstrating a responsive HealthCare Management System layout and user interface design.</p>
+                        <div class="links">
+                            <a href="https://impritamk.github.io/HealthCare-Management-System/" target="_blank" class="card-link">View Live</a>
+                        </div>
+                    </div>
+                </div>
 
-<section id="projects" class="section">
-  <h2>Projects</h2>
+                <div class="project-card">
+                    <div class="project-card-image" style="background-color: #ff5277;">
+                        <i class="fa-solid fa-calculator"></i>
+                        <div style="font-size: 14px; margin-top: 5px;">HTML | CSS | Vanilla JS</div>
+                    </div>
+                    <div class="project-card-content">
+                        <h3>Modern Calculator</h3>
+                        <p>An interactive calculator interface built with vanilla JavaScript, focusing on functional logic and clean aesthetics.</p>
+                        <div class="links">
+                            <a href="https://impritamk.github.io/Modern-Calculator/" target="_blank" class="card-link">View Live</a>
+                        </div>
+                    </div>
+                </div>
 
-  <div class="projects">
-    <div class="card">
-      <h3>Calculator App</h3>
-      <p>Modern calculator using HTML, CSS & JS</p>
-    </div>
+                <div class="project-card">
+                    <div class="project-card-image" style="background-color: #a49bff;">
+                        <i class="fa-solid fa-cloud-sun"></i>
+                        <div style="font-size: 14px; margin-top: 5px;">HTML | CSS | JS | Weather API</div>
+                    </div>
+                    <div class="project-card-content">
+                        <h3>Weather Dashboard</h3>
+                        <p>A frontend dashboard for displaying weather information, utilizing APIs for data fetching and visualization.</p>
+                        <div class="links">
+                            <a href="https://impritamk.github.io/Weather-Deshboard/" target="_blank" class="card-link">View Live</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="social-links" style="justify-content: center; margin-top: 40px;">
+                <strong>Find more on:</strong>
+                <a href="https://github.com/yourusername" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="    " target="_blank" aria-label="HackerRank"><i class="fa-brands fa-hackerrank"></i></a>
+            </div>
+        </section>
+        
+        <section id="page-contact" class="page">
+            <h2 id="contact">Connect</h2>
+            <div class="content-box">
+                <p style="font-size: clamp(16px, 3vw, 20px); margin-bottom: 30px; text-align: center;">Feel free to contact me with any inquiries or questions!</p>
+                
+                <form action="connects.php" method="post">
+                    <h3 style="text-align: center; color: var(--color-primary); margin-bottom: 20px;">Send Me a Message</h3>
+                    
+                    <div class="input-box">
+                        <label for="name" class="hidden-label">Name</label>
+                        <input type="text" id="name" name="name" required>
+                        <span>Name</span>
+                    </div>
+                    
+                    <div class="input-box">
+                        <label for="email" class="hidden-label">Email</label>
+                        <input type="email" id="email" name="email" required>
+                        <span>Email</span>
+                    </div>
+                    
+                    <div class="input-box">
+                        <label for="msg" class="hidden-label">Message</label>
+                        <textarea name="msg" rows="4" id="msg" required></textarea>
+                        <span>Message</span>
+                    </div>
+                    <input type="hidden" name="submit" value="1">
+                    <button type="submit">Send Message</button>
+                </form>
+                
+                <div class="social-links" style="justify-content: center; margin-top: 40px;">
+                    <a href="https://www.linkedin.com/in/rakhi-kumari-006236238/" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="mailto:im.kumarirakhi020201@gmail.com" target="_blank" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+                </div>
+            </div>
+        </section>
+        
+    </main>
 
-    <div class="card">
-      <h3>Portfolio Website</h3>
-      <p>Premium animated personal portfolio</p>
-    </div>
-  </div>
-</section>
+    <footer>
+        <p>&copy; 2025 Rakhi. All rights reserved.</p>
+    </footer>
 
-<section id="contact" class="section">
-  <h2>Contact</h2>
-  <p>Email: pankaj@email.com</p>
-</section>
+    <script>
+        // --- JavaScript Start ---
+        
+        // --- 3D Scene Logic (Cursor-Interactive Particle Background) ---
+        const container = document.getElementById('three-container');
+        let scene, camera, renderer, particles;
+        let mouseX = 0, mouseY = 0;
+        let windowHalfX = window.innerWidth / 2;
+        let windowHalfY = window.innerHeight / 2;
+        let animationFrameId = null;
 
-<footer>
-  <p>© 2026 Pankaj | All Rights Reserved</p>
-</footer>
+        if (typeof THREE !== 'undefined' && container) {
+            initThreeScene();
+        } else {
+            console.error("Three.js not loaded or container not found. Cannot run 3D scene.");
+        }
+        
+        function getAccentColor() {
+            // Retrieve accent color dynamically for theme changes
+            const tempDiv = document.createElement('div');
+            tempDiv.style.display = 'none';
+            document.body.appendChild(tempDiv);
+            const accentColor = getComputedStyle(document.body).getPropertyValue('--color-accent').trim() || '#a49bff';
+            document.body.removeChild(tempDiv);
+            return accentColor;
+        }
+        
+        // Custom texture for particles (a simple dot)
+        function createDotTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 64;
+            canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(32, 32, 28, 0, Math.PI * 2);
+            ctx.fill();
+            return new THREE.CanvasTexture(canvas);
+        }
 
-<script src="script.js"></script>
+        function initThreeScene() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            
+            if (window.WebGLRenderingContext) {
+                 renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            } else {
+                 console.warn("WebGL not supported. 3D background disabled.");
+                 container.style.display = 'none';
+                 return;
+            }
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setClearColor(0x000000, 0); 
+            container.appendChild(renderer.domElement);
+            container.style.opacity = 1; 
+
+            const accentColor = getAccentColor();
+
+            // --- Particle Field Setup ---
+            const particleCount = 1000; 
+            const posArray = new Float32Array(particleCount * 3);
+            
+            // Scatter particles randomly in a large volume
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                posArray[i] = (Math.random() - 0.5) * 50; 
+                posArray[i + 1] = (Math.random() - 0.5) * 50; 
+                posArray[i + 2] = (Math.random() - 0.5) * 50; 
+            }
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+            const material = new THREE.PointsMaterial({
+                color: new THREE.Color(accentColor),
+                size: 0.1, 
+                map: createDotTexture(),
+                transparent: true,
+                blending: THREE.AdditiveBlending, 
+                sizeAttenuation: true,
+                opacity: 0.8
+            });
+
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            camera.position.z = 5;
+
+            document.addEventListener('mousemove', onDocumentMouseMove);
+            window.addEventListener('resize', onWindowResize);
+            
+            animate();
+        }
+
+        function onDocumentMouseMove(event) {
+            // MouseX/Y is scaled to -0.5 to 0.5
+            mouseX = (event.clientX / window.innerWidth) - 0.5; 
+            mouseY = (event.clientY / window.innerHeight) - 0.5;
+        }
+
+        function onWindowResize() {
+            if (!camera || !renderer) return;
+            windowHalfX = window.innerWidth / 2;
+            windowHalfY = window.innerHeight / 2;
+            
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            if (!particles || !renderer) return;
+            animationFrameId = requestAnimationFrame(animate);
+
+            const time = Date.now() * 0.00005; 
+
+            // Auto-movement: Gently drift the entire field
+            particles.rotation.y = time * 0.5;
+            
+            // Cursor Interaction: Rotate the entire scene/camera based on mouse position
+            camera.position.x += ( (mouseX * 5) - camera.position.x ) * 0.05; 
+            camera.position.y += ( -(mouseY * 5) - camera.position.y ) * 0.05;
+            camera.lookAt(scene.position);
+
+
+            // Update color based on theme
+            const newAccentColor = getAccentColor();
+            if (particles.material.color.getHexString() !== newAccentColor.replace('#', '')) {
+                 particles.material.color.set(newAccentColor);
+            }
+
+            renderer.render(scene, camera);
+        }
+
+
+        // --- Core Portfolio Logic ---
+        
+        const body = document.body;
+        const themeToggle = document.getElementById('theme-toggle');
+        const navLinks = document.querySelectorAll('#main-nav a');
+        const contentContainer = document.getElementById('content-container');
+        const form = document.querySelector('form');
+
+        // Theme functions
+        function setTheme(theme) {
+            body.setAttribute('data-theme', theme);
+            const icon = theme === 'dark' ? '🌙' : '☀️';
+            themeToggle.textContent = icon;
+            localStorage.setItem('theme', theme);
+        }
+
+        function toggleTheme() {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        }
+        
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', () => {
+            document.getElementById('main-nav').classList.toggle('open');
+        });
+
+        // Close mobile menu on link click 
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const nav = document.getElementById('main-nav');
+                if (nav.classList.contains('open')) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+
+        // Add 'active' class to navbar item on scroll 
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('.page');
+            const headerHeight = document.querySelector('header').offsetHeight;
+
+            sections.forEach(section => {
+                // Check if the top of the section is visible in the viewport, factoring in header height
+                const sectionTop = section.offsetTop - headerHeight; 
+                
+                if (scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+        
+        // Form submission loading state
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const submitBtn = form.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = 'Sending...';
+                submitBtn.disabled = true;
+                
+                // Simulate form sending completion for 3 seconds
+                setTimeout(() => {
+                    if (submitBtn.innerHTML === 'Sending...') {
+                        submitBtn.innerHTML = 'Send Message';
+                        submitBtn.disabled = false;
+                        alert("Form submitted successfully (simulated)."); // Provide feedback
+                    }
+                }, 3000);
+            });
+        }
+        
+        // Function to display form status messages (kept for completeness if using connect.php)
+        function displayFormStatus() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status');
+            const message = urlParams.get('message');
+            const formSection = document.getElementById('page-contact')?.querySelector('.content-box');
+
+            if (status && message && formSection) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `status-message status-${status}`;
+                messageDiv.textContent = decodeURIComponent(message);
+                
+                const formElement = formSection.querySelector('form');
+                if (formElement) {
+                    formElement.before(messageDiv);
+                }
+
+                if (window.history.replaceState) {
+                    const cleanUrl = window.location.pathname + window.location.hash;
+                    window.history.replaceState(null, '', cleanUrl);
+                }
+                
+                // Scroll to the contact section to show the message
+                document.getElementById('page-contact').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Initial load
+        window.addEventListener('load', function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                 setTheme('light');
+            } else {
+                 setTheme('dark'); 
+            }
+            displayFormStatus();
+            
+            // Initial active link setting based on current hash, if any
+            const currentHash = window.location.hash || '#page-home';
+            const initialLink = document.querySelector(`#main-nav a[href="${currentHash}"]`);
+            if (initialLink) {
+                initialLink.classList.add('active');
+            } else {
+                document.querySelector('#main-nav a[href="#page-home"]').classList.add('active');
+            }
+        });
+
+        // --- JavaScript End ---
+    </script>
 </body>
 </html>
+
