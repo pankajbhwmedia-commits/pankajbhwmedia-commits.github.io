@@ -1,10 +1,29 @@
+let header = document.querySelector("header");
+let menu = document.querySelector("#menu-icon");
+let navbar = document.querySelector(".navbar");
+
 window.addEventListener("scroll", () => {
-  document.querySelectorAll(".card").forEach(card => {
-    let position = card.getBoundingClientRect().top;
-    let screen = window.innerHeight / 1.3;
-    if (position < screen) {
-      card.style.transform = "scale(1)";
-      card.style.opacity = "1";
-    }
-  });
+  header.classList.toggle("shadow", window.scrollY > 0);
 });
+
+menu.onclick = () => {
+  navbar.classList.toggle("active");
+};
+window.onscroll = () => {
+  navbar.classList.remove("active");
+};
+
+// Dark Mode / light mode
+let darkmode = document.querySelector("#darkmode");
+
+darkmode.onclick = () => {
+  if (darkmode.classList.contains("bx-moon")) {
+    darkmode.classList.replace("bx-moon", "bx-sun");
+    document.body.classList.add("active");
+  } else {
+    darkmode.classList.replace("bx-sun", "bx-moon");
+    document.body.classList.remove("active");
+  }
+};
+
+                                    
